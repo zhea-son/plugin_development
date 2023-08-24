@@ -48,7 +48,7 @@ class EmailSetup{
                 'post_title'   => $_POST['subject'],
                 'post_content' => $email_content,
                 'post_status'  => 'publish',
-                'post_type'    => 'post', // You can change the post type if needed
+                'post_type'    => 'post',
             );
             $post_id = wp_insert_post($post_args);
             if($post_id){
@@ -73,11 +73,9 @@ class EmailSetup{
         $single_post = get_post($id);
         
         if ($single_post) {
-            // Now you can access various properties of the post
             $post_title = $single_post->post_title;
             $post_content = $single_post->post_content;
 
-            // You can do further processing with the retrieved post data
             echo 'Post Title: ' . $post_title . '<br>';
             echo 'Post Content: ' . $post_content . '<br>';
             echo 'Email is: '.$email.' <br>';
