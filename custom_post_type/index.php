@@ -25,7 +25,18 @@ class CPT{
     }
 
     public function create_custom_post_type(){
+
+        $supports = array(
+            'title',
+            'editor',
+            'author',
+            'thumbnail',
+            'custom-fields',
+            'comments',
+            'post-format',
+        );
         $args = array(
+            'supports' => $supports,
 			'labels'      => array(
 				'name'          => __('Movies'),
 				'singular_name' => __('Movie'),
