@@ -19,7 +19,7 @@
         <tr>
             <td>
                 <select name="rating_filter" id="rating_filter">
-                    <option value="0">Filter Rating</option>
+                    <option value="0"><?php echo __("Filter Rating", 'user-review-plugin') ?></option>
                     <option value="1" <?php if(isset($filter)) selected($filter['rating_filter'], 1) ?>>1</option>
                     <option value="2" <?php if(isset($filter)) selected($filter['rating_filter'], 2) ?>>2</option>
                     <option value="3" <?php if(isset($filter)) selected($filter['rating_filter'], 3) ?>>3</option>
@@ -28,10 +28,10 @@
                 </select>
             </td>
             <td>
-                <div style="margin-top:10px;margin-left:50px;"><input id="latest_filter" type="checkbox" name="latest_filter"  <?php if(isset($filter['latest_filter'])) checked($filter['latest_filter'], 1) ?>/>Latest</div>
+                <div style="margin-top:10px;margin-left:50px;"><input id="latest_filter" type="checkbox" name="latest_filter"  <?php if(isset($filter['latest_filter'])) checked($filter['latest_filter'], 1) ?>/><?php echo __("Latest", 'user-review-plugin') ?></div>
             </td>
             <td>
-                <button type="submit" name="btnFilter" id="btnFilter" value="clicked">Apply</button>
+                <button type="submit" name="btnFilter" id="btnFilter" value="clicked"><?php echo __("Apply", 'user-review-plugin') ?></button>
             </td>
         </tr>
         </table>
@@ -39,11 +39,11 @@
 
     <table>
         <thead>
-            <th>SN</th>
-            <th>Full Name</th>
-            <th>Email</th>
-            <th>Rating</th>
-            <th>Review Description</th>
+            <th><?php echo __("SN", 'user-review-plugin') ?></th>
+            <th><?php echo __("Full Name", 'user-review-plugin') ?></th>
+            <th><?php echo __("Email", 'user-review-plugin') ?></th>
+            <th><?php echo __("Rating", 'user-review-plugin') ?></th>
+            <th><?php echo __("Review Description", 'user-review-plugin') ?></th>
         </thead>
         <tbody id="review_body">
             <?php if(empty($user_query->results)){
@@ -97,6 +97,6 @@
     }else{ 
 ?>
         <h3>Please Login First</h3>
-        <a href="<?php echo home_url('/wp-login.php'); ?>">Click here!</a>
+        <a href="<?php echo home_url('/wp-login.php'); ?>"><?php echo __("Click Here!", 'user-review-plugin') ?></a>
 
 <?php } ?>

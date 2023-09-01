@@ -7,7 +7,7 @@ if(!defined('ABSPATH')){
 
 /*
  * Plugin Name:       User Review Plugin
- * Description:       Handle the basics with this plugin.
+ * Description:       Handle the basics with this plugin. Use [registrationform] for User and Review Registration. Use [reviews] to view reviews.
  * Version:           1.0.0
  * Requires at least: 5.2
  * Requires PHP:      7.2
@@ -53,6 +53,7 @@ if(!class_exists('UserReview')){
 
         public function init_hooks(){
             add_action('init',array($this, 'initialize'));
+            add_action('plugins_loaded',array($this, 'load_textdomain'));
         }
 
         private function define_constants(){
@@ -72,7 +73,10 @@ if(!class_exists('UserReview')){
 
         }
 
-        
+        public function load_textdomain(){
+            load_plugin_textdomain('user-review-plugin', false, dirname(plugin_basename(__FILE__)) . '/languages/');
+        }
+       
 
     }
 

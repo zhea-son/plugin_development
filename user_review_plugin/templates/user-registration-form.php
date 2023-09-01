@@ -44,28 +44,29 @@ if(!defined('ABSPATH')){
 
     <form method="post" id="register_form">
         <table>
+            <?php wp_nonce_field('user_review_nonce'); ?>
             <tr>
-                <td><label>Email</label></td>
+                <td><label><?php echo __("Email", 'user-review-plugin') ?></label></td>
                 <td><input type="email" name="user_email" placeholder="username@gmail.com" /></td>
             </tr>
             <tr>
-                <td><label>Password</label></td>
+                <td><label><?php echo __("Password", 'user-review-plugin') ?></label></td>
                 <td><input type="password" name="user_password" placeholder="Password" /></td>
             </tr>
             <tr>
-                <td><label>First Name</label></td>
+                <td><label><?php echo __("First Name", 'user-review-plugin') ?></label></td>
                 <td><input type="text" name="f_name" placeholder="First Name" /></td>
             </tr>
             <tr>
-                <td><label>Last Name</label></td>
+                <td><label><?php echo __("Last Name", 'user-review-plugin') ?></label></td>
                 <td><input type="text" name="l_name" placeholder="Last Name" /></td>
             </tr>
             <tr>
-                <td><label>Review Product</label></td>
+                <td><label><?php echo __("Review Product", 'user-review-plugin') ?></label></td>
                 <td><textarea rows="5" name="user_review" placeholder="Please give a review for our product" ></textarea></td>
             </tr>
             <tr>
-                <td><label>Rating (star)</label></td>
+                <td><label><?php echo __("Rating", 'user-review-plugin') ?></label></td>
                 <td>
                     <select name="rating">
                         <option value="1">1</option>
@@ -79,7 +80,7 @@ if(!defined('ABSPATH')){
 
             <tr>
                 <td colspan="2">
-                    <button role="submit" name="btnSubmit">Submit</button>
+                    <button role="submit" name="btnSubmit"><?php echo __("Submit", 'user-review-plugin') ?></button>
                 </td>
             </tr>
 

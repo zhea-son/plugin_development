@@ -51,7 +51,6 @@ class AjaxFilter{
         wp_enqueue_script('custom-ajax-script', PLUGIN_URL . '/assets/js/main.js', [], '1.0', true);
         wp_localize_script('custom-ajax-script', 'ajaxObj', array(
                 'ajaxurl' => admin_url('admin-ajax.php'),
-                'nonce' => wp_create_nonce('reviews_nonce'),
             )
         );
     }

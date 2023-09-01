@@ -29,9 +29,8 @@ class SaveData{
     
 
     public function save_user_data(){
-
+        
         // check if user email field is empty
-
         if(isset($_POST['btnSubmit']) && !empty($_POST['user_email'])){
             
             $user = get_user_by('email', $_POST['user_email']);
@@ -52,20 +51,27 @@ class SaveData{
                     // check if none of the fields are empty
                     if(!empty($_POST['user_password']) && !empty($_POST['f_name']) && !empty($_POST['l_name']) && !empty($_POST['user_review']) && !empty($_POST['rating']))
                     {
-                        $data = array(
-                            'user_pass' => $_POST['user_password'],
-                            'user_login' => $username,
-                            'user_email' => sanitize_email($_POST['user_email']),
-                            'display_name' => $username,
-                            'role' => "subscriber",
-                            'meta_input' => array(
-                                'first_name' => sanitize_text_field($_POST['f_name']),
-                                'last_name' => sanitize_text_field($_POST['l_name']),
-                                'user_review' => sanitize_textarea_field($_POST['user_review']),
-                                'user_rating' => $_POST['rating']
-                            ),
-                        );
 
+                        if(check_admin_referer('user_review_nonce')){
+
+                            
+                            $data = array(
+                                'user_pass' => $_POST['user_password'],
+                                'user_login' => $username,
+                                'user_email' => sanitize_email($_POST['user_email']),
+                                'display_name' => $username,
+                                'role' => "subscriber",
+                                'meta_input' => array(
+                                    'first_name' => sanitize_text_field($_POST['f_name']),
+                                    'last_name' => sanitize_text_field($_POST['l_name']),
+                                    'user_review' => sanitize_textarea_field($_POST['user_review']),
+                                    'user_rating' => $_POST['rating']
+                                ),
+                            );
+                        }else{
+                            wp_die('Nonce Verification Failed', 'Nonce Error');
+                        }
+                            
                         // insert user
                         $saved = wp_insert_user($data);
         
