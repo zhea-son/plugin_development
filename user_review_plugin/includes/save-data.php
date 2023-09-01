@@ -36,74 +36,78 @@ class SaveData{
             
             $user = get_user_by('email', $_POST['user_email']);
             
-            if($user){
-                echo "email already exits please select other email";
-                wp_die();
-            }
-
-        
-            // extract username from hook
-            $username = apply_filters('extract_username_hook', $_POST['user_email']);
-            
-
-            // if username extracted not empty and username extracted is not valid
-
-            if(!empty($username) && (str_replace('_',' ', $username) != ' ')){
-                echo $username;
-                wp_die();
-
-                // check if none of the fields are empty
-
-                if(!empty($_POST['user_password']) && !empty($_POST['f_name']) && !empty($_POST['l_name']) && !empty($_POST['user_review']) && !empty($_POST['rating']))
-                {
-                    $data = array(
-                        'user_pass' => $_POST['user_password'],
-                        'user_login' => $username,
-                        'user_email' => sanitize_email($_POST['user_email']),
-                        'display_name' => $username,
-                        'role' => "subscriber",
-                        'meta_input' => array(
-                            'first_name' => sanitize_text_field($_POST['f_name']),
-                            'last_name' => sanitize_text_field($_POST['l_name']),
-                            'user_review' => sanitize_textarea_field($_POST['user_review']),
-                            'user_rating' => $_POST['rating']
-                        ),
-                    );
-
-
-                    // insert user
-                    $saved = wp_insert_user($data);
-
-                    
-                    if($saved){
-
-                        // send mail 
-                        do_action('send_email_hook', $data['user_email'], $data['user_login']);
-
-                        // redirect to reviews table page
-                        wp_redirect(esc_url_raw(add_query_arg(array())));
-
-                        exit;
-
-                    }
-                    
-                    else{
-                        echo "Error during insertion";
-                        wp_die();
-                    }
-
-                }
-                else
-                {
-                    echo 'Please insert valid data';
-                    wp_die();
-                }
+            if($user)
+            {
+                wp_enqueue_script('display-emailexists-notification',PLUGIN_URL . '/assets/js/notification.js', [], '1.0', true );
             }
             else
             {
-                echo "Not valid email and username";
-                wp_die();
+
+                // extract username from hook
+                $username = apply_filters('extract_username_hook', $_POST['user_email']);
+                
+                // if username extracted not empty and username extracted is not valid
+                if(!empty($username) && (str_replace('_',' ', $username) != ' ')){
+                    
+                    // check if none of the fields are empty
+                    if(!empty($_POST['user_password']) && !empty($_POST['f_name']) && !empty($_POST['l_name']) && !empty($_POST['user_review']) && !empty($_POST['rating']))
+                    {
+                        $data = array(
+                            'user_pass' => $_POST['user_password'],
+                            'user_login' => $username,
+                            'user_email' => sanitize_email($_POST['user_email']),
+                            'display_name' => $username,
+                            'role' => "subscriber",
+                            'meta_input' => array(
+                                'first_name' => sanitize_text_field($_POST['f_name']),
+                                'last_name' => sanitize_text_field($_POST['l_name']),
+                                'user_review' => sanitize_textarea_field($_POST['user_review']),
+                                'user_rating' => $_POST['rating']
+                            ),
+                        );
+
+                        // insert user
+                        $saved = wp_insert_user($data);
+        
+                        if($saved){
+
+                            // send mail 
+                            do_action('send_email_hook', $data['user_email'], $data['user_login']);
+
+                            wp_enqueue_script('display-userregistered-notification',PLUGIN_URL . '/assets/js/notification.js', [], '1.0', true );
+                            
+                            // redirect to reviews table page
+                            wp_redirect(esc_url_raw(add_query_arg(array())));
+
+
+                        }
+                        
+                        else{
+                            wp_enqueue_script('display-insertionerror-notification',PLUGIN_URL . '/assets/js/notification.js', [], '1.0', true );
+
+                        }
+
+                    }
+
+                    else
+                    {
+                        wp_enqueue_script('display-nodata-notification',PLUGIN_URL . '/assets/js/notification.js', [], '1.0', true );
+                        
+                    }
+                }
+                
+                else
+                {
+                    wp_enqueue_script('display-novalidemail-notification',PLUGIN_URL . '/assets/js/notification.js', [], '1.0', true );
+
+                }
             }
+        }
+
+        elseif (isset($_POST['btnSubmit']) && empty($_POST['user_email'])){
+            
+            wp_enqueue_script('display-noemail-notification',PLUGIN_URL . '/assets/js/notification.js', [], '1.0', true );
+
         }
         
     }

@@ -29,6 +29,7 @@ if(!class_exists('UserReview')){
         private $user; 
         private $grid; 
         private $ajax_filters; 
+        private $notification; 
 
         public function __construct(){
 
@@ -46,6 +47,7 @@ if(!class_exists('UserReview')){
             $this->user = new SaveData();
             $this->grid = new GridDisplay();
             $this->ajax_filters = new AjaxFilter();
+            $this->notification = new Notification();
         }
 
 
@@ -66,8 +68,11 @@ if(!class_exists('UserReview')){
             require_once MY_PLUGIN_PATH . '/includes/save-data.php';
             require_once MY_PLUGIN_PATH . '/includes/grid-display.php';
             require_once MY_PLUGIN_PATH . '/includes/ajax-filter.php';
+            require_once MY_PLUGIN_PATH . '/includes/show-notification.php';
 
         }
+
+        
 
     }
 

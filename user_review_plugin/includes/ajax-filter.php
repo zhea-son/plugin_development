@@ -11,9 +11,6 @@ class AjaxFilter{
 
         $this->init_hooks();
 
-        require_once MY_PLUGIN_PATH . '/includes/grid-display.php';
-        
-        
     }
 
     public function init_hooks(){
@@ -115,8 +112,15 @@ class AjaxFilter{
             // if latest filter is not set and rating filter is null
             if( esc_html($_POST['rating']) == 0 ){
 
-                echo "Please apply some filter";
-                wp_die();
+                $args = array(
+                    'number' => 5 ,    
+                    'meta_query' => array(
+                        array(
+                            'key' => 'user_review',
+                            'compare' => 'EXISTS',
+                        ),
+                    ) , 
+                );
                     
             }
             
@@ -168,13 +172,12 @@ class AjaxFilter{
                         <td>' . esc_html($rrating) .'</td>
                         <td>' . esc_html($review) .'</td></tr>';
             }
-
-
-            // total number of pages for the filter applied
-            $j = ceil($user_query->total_users / 5);
-
+            
         }
-
+        
+        // total number of pages for the filter applied
+        $j = ceil($user_query->total_users / 5);
+        
         wp_send_json(array(
             'template' => $template,
             'pages' => $j,
@@ -293,7 +296,6 @@ class AjaxFilter{
 
         $user_query = new WP_User_Query($args);
         $template = '';
-        $pages = '';
 
         if(empty($user_query->results)){
             $template = "No reviews yet";
@@ -314,11 +316,10 @@ class AjaxFilter{
                         <td>' . esc_html($rrating) .'</td>
                         <td>' . esc_html($review) .'</td></tr>';
             }
-
-            $j = ceil($user_query->total_users / 5);
-
+    
         }
-
+        $j = ceil($user_query->total_users / 5);
+        
         wp_send_json(array(
             'template' => $template,
             'pages' => $j,

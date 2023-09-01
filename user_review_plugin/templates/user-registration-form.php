@@ -6,9 +6,6 @@ if(!defined('ABSPATH')){
 }
 
 
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -17,10 +14,33 @@ if(!defined('ABSPATH')){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Registration</title>
+
+    <style>
+        .notification-content{
+            background:teal;
+            display:none;
+            height:50px;
+        }
+        .notification-content p{
+            color:white;
+            font-size:15px;
+            padding-top:10px;
+            text-align:center;
+            float:left;
+        }
+        .close-content{
+            float:right;
+        }
+    </style>
+    <script></script>
 </head>
 <body>
-    <h3>This is User Registration Form</h3>
-    <p>Please Review Our Product</p>
+
+    <div class="notification-content">
+        <p id="message"></p>
+        <div class="close-content"><button>x</button></div>
+    </div>
+
 
     <form method="post" id="register_form">
         <table>

@@ -24,7 +24,7 @@ jQuery(document).ready(function ($){
 
                 for(i=1;i<=response.total_pages;i++){
                     if( i <= response.pages ){
-                        $('#page_no_'+i).css("color", "").css("text-decoration", "underline");
+                        $('#page_no_'+i).css("color", "").css("text-decoration", "underline").show();
                         if(i == response.active_page){
                             $('#page_no_'+i).css("color", "red").css("text-decoration", "none");
                         }
@@ -77,8 +77,10 @@ jQuery(document).ready(function ($){
                 
             }
         });
-    });
-
+    });   
     
+    $('.close-content').on('click', function(e){
+        $('.notification-content').hide();
+    });
 
 });
