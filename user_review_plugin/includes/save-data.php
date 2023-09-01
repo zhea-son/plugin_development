@@ -20,65 +20,89 @@ class SaveData{
 
     public function init_hooks(){
         
+        //custom hooks to extract username and send email
         add_filter('extract_username_hook', array($this, 'extract_username_callback'));
         add_action('send_email_hook', array($this, 'send_email_callback'),10,2);
         
-        // echo "Hello";
     }
 
     
 
     public function save_user_data(){
-        
+
         // check if user email field is empty
 
-        if(!empty($_POST['user_email'])){
+        if(isset($_POST['btnSubmit']) && !empty($_POST['user_email'])){
+            
+            $user = get_user_by('email', $_POST['user_email']);
+            
+            if($user){
+                echo "email already exits please select other email";
+                wp_die();
+            }
+
+        
+            // extract username from hook
             $username = apply_filters('extract_username_hook', $_POST['user_email']);
-        }
+            
 
-        // if email not empty
+            // if username extracted not empty and username extracted is not valid
 
-        if(isset($username)){
+            if(!empty($username) && (str_replace('_',' ', $username) != ' ')){
+                echo $username;
+                wp_die();
 
-            // check if none of the fields are empty
+                // check if none of the fields are empty
 
-            if(!empty($_POST['user_password']) && !empty($_POST['f_name']) && !empty($_POST['l_name']) && !empty($_POST['user_review']) && !empty($_POST['rating']))
-            {
-                $data = array(
-                    'user_pass' => $_POST['user_password'],
-                    'user_login' => $username,
-                    'user_email' => sanitize_email($_POST['user_email']),
-                    'display_name' => $username,
-                    'role' => "subscriber",
-                    'meta_input' => array(
-                        'first_name' => sanitize_text_field($_POST['f_name']),
-                        'last_name' => sanitize_text_field($_POST['l_name']),
-                        'user_review' => sanitize_textarea_field($_POST['user_review']),
-                        'user_rating' => $_POST['rating']
-                    ),
-                );
+                if(!empty($_POST['user_password']) && !empty($_POST['f_name']) && !empty($_POST['l_name']) && !empty($_POST['user_review']) && !empty($_POST['rating']))
+                {
+                    $data = array(
+                        'user_pass' => $_POST['user_password'],
+                        'user_login' => $username,
+                        'user_email' => sanitize_email($_POST['user_email']),
+                        'display_name' => $username,
+                        'role' => "subscriber",
+                        'meta_input' => array(
+                            'first_name' => sanitize_text_field($_POST['f_name']),
+                            'last_name' => sanitize_text_field($_POST['l_name']),
+                            'user_review' => sanitize_textarea_field($_POST['user_review']),
+                            'user_rating' => $_POST['rating']
+                        ),
+                    );
 
-                // print_r($data);
-                // die;
 
-                // insert user
-                $saved = wp_insert_user($data);
+                    // insert user
+                    $saved = wp_insert_user($data);
 
-                
-                if($saved){
+                    
+                    if($saved){
 
-                    // send mail 
-                    do_action('send_email_hook', $data['user_email'], $data['user_login']);
+                        // send mail 
+                        do_action('send_email_hook', $data['user_email'], $data['user_login']);
 
-                    // redirect to reviews table page
-                    wp_redirect(esc_url_raw(add_query_arg(array())));
-                    // wp_redirect(home_url('/index.php/reviews'));
-                    exit;
-                }else{
-                    echo "Error during insertion";
-                    die;
+                        // redirect to reviews table page
+                        wp_redirect(esc_url_raw(add_query_arg(array())));
+
+                        exit;
+
+                    }
+                    
+                    else{
+                        echo "Error during insertion";
+                        wp_die();
+                    }
+
                 }
-
+                else
+                {
+                    echo 'Please insert valid data';
+                    wp_die();
+                }
+            }
+            else
+            {
+                echo "Not valid email and username";
+                wp_die();
             }
         }
         
