@@ -78,9 +78,5 @@ jQuery(document).ready(function ($){
             }
         });
     });   
-    
-    $('.close-content').on('click', function(e){
-        $('.notification-content').hide();
-    });
 
 });

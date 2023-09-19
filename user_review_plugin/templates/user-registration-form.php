@@ -13,38 +13,20 @@ if(!defined('ABSPATH')){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Registration</title>
-
-    <style>
-        .notification-content{
-            background:teal;
-            display:none;
-            height:50px;
-        }
-        .notification-content p{
-            color:white;
-            font-size:15px;
-            padding-top:10px;
-            text-align:center;
-            float:left;
-        }
-        .close-content{
-            float:right;
-        }
-    </style>
-    <script></script>
+    <link rel="stylesheet" href= "<?php echo PLUGIN_URL; ?>/assets/css/main.css">
+    
 </head>
 <body>
 
     <div class="notification-content">
-        <p id="message"></p>
+        <p id="message">Oh my gwad</p>
         <div class="close-content"><button>x</button></div>
     </div>
 
 
     <form method="post" id="register_form">
         <table>
-            <?php wp_nonce_field('user_review_nonce'); ?>
+            <?php wp_nonce_field( 'user_review_nonce' ); ?>
             <tr>
                 <td><label><?php echo __("Email", 'user-review-plugin') ?></label></td>
                 <td><input type="email" name="user_email" placeholder="username@gmail.com" /></td>

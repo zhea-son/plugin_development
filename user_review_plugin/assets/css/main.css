@@ -1,0 +1,16 @@
+
+.notification-content{
+    background:teal;
+    display:none;
+    height:50px;
+}
+.notification-content p{
+    color:white;
+    float:left;
+    font-size:15px;
+    padding-top:10px;
+    text-align:center;
+}
+.close-content{
+    float:right;
+}

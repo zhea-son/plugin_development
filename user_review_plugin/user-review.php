@@ -1,7 +1,7 @@
 <?php
 
 // For first line of defense (security)
-if(!defined('ABSPATH')){
+if( ! defined( 'ABSPATH' ) ){
     die("You cannot be here!");
 }
 
@@ -19,18 +19,16 @@ if(!defined('ABSPATH')){
  * Domain Path:       /languages
  */
 
+ 
 // If a class named UserReview doesn't exist, create one
 
-if(!class_exists('UserReview')){
+if( !  class_exists( 'UserReview' ) ){
 
     class UserReview{
 
-        private $form; 
-        private $user; 
-        private $grid; 
-        private $ajax_filters; 
-        private $notification; 
-
+        // property to instantiate shortcode
+        private $displayshortcode; 
+               
         public function __construct(){
 
             $this->init_hooks();
@@ -42,39 +40,57 @@ if(!class_exists('UserReview')){
 
         }
 
-        public function initialize(){
-            $this->form = new FormDisplay();
-            $this->user = new SaveData();
-            $this->grid = new GridDisplay();
-            $this->ajax_filters = new AjaxFilter();
-            $this->notification = new Notification();
-        }
 
-
+        /**
+         * initialize action hooks
+         */
         public function init_hooks(){
-            add_action('init',array($this, 'initialize'));
-            add_action('plugins_loaded',array($this, 'load_textdomain'));
+
+            add_action( 'init', array( $this, 'initialize' ) );
+            add_action( 'plugins_loaded',array( $this, 'load_textdomain' ) );
+
         }
+
+        
+        /**
+         * instantiate shortcode
+         */
+        public function initialize(){
+
+            $this->displayshortcode = new Shortcodes();
+
+        }
+
+        /**
+         * define constants for plugin
+         */
 
         private function define_constants(){
 
-            define('MY_PLUGIN_PATH', dirname( __FILE__ ));
-            define('PLUGIN_URL', plugins_url('',__FILE__));
+            define( 'MY_PLUGIN_PATH', dirname( __FILE__ ) );
+            define( 'PLUGIN_URL', plugins_url( '' , __FILE__ ) );
 
         }
 
+        /**
+         * include plugin files
+         */
         private function includes(){
 
-            require_once MY_PLUGIN_PATH . '/includes/form-display.php';
             require_once MY_PLUGIN_PATH . '/includes/save-data.php';
-            require_once MY_PLUGIN_PATH . '/includes/grid-display.php';
+            require_once MY_PLUGIN_PATH . '/includes/shortcodes/class-shortcodes.php';
             require_once MY_PLUGIN_PATH . '/includes/ajax-filter.php';
-            require_once MY_PLUGIN_PATH . '/includes/show-notification.php';
 
         }
 
+
+        /** 
+         * plugin text domain 
+         */
         public function load_textdomain(){
-            load_plugin_textdomain('user-review-plugin', false, dirname(plugin_basename(__FILE__)) . '/languages/');
+
+            load_plugin_textdomain( 'user-review-plugin', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+        
         }
        
 
